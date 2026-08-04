@@ -915,12 +915,35 @@ async function loadAdminPanel() {
       div.innerHTML = `
         <div class="player-name">کاربر: ${p.username} &nbsp;|&nbsp; جناح: ${p.faction || 'نامشخص'}</div>
         <div class="player-info">💰 ${(p.money||0).toLocaleString()} ₿ | 🥇 ${p.gold||0} طلا | 😊 رضایت: ${p.satisfaction !== undefined ? p.satisfaction : 100}%</div>
-        <div style="margin-top:8px;"><button class="btn btn-sm" onclick="adminOpenEdit('${p.username}')">🛠️ ورود به اتاق فرمان و ویرایش کامل</button></div>`;
+        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-sm" onclick="adminOpenEdit('${p.username}')">🛠️ ویرایش کامل</button>
+          <button class="btn btn-sm btn-red" onclick="adminDeletePlayer('${p.username}', '${p.faction || 'بدون جناح'}')">🗑️ حذف اکانت و آزادسازی کشور</button>
+        </div>`;
       container.appendChild(div);
     });
   } catch(e) { container.innerHTML = '<div class="error">خطا در اتصال به دیتابیس</div>'; }
 }
 window.loadAdminPanel = loadAdminPanel;
+
+/* DELETE PLAYER & FREE FACTION FUNCTION */
+window.adminDeletePlayer = async function(uid, factionName) {
+  const confirmDelete = confirm(`⚠️ آیا مطمئن هستید که می‌خواهید کاربر "${uid}" و کشور/جناح "${factionName}" را کاملاً حذف کنید؟\nاین عملیات غیرقابل بازگشت است و کشور آزاد می‌شود.`);
+  if (!confirmDelete) return;
+
+  try {
+    const { error } = await supabase.from('players').delete().eq('username', uid);
+    if (error) throw error;
+
+    notify(`✅ کشور/جناح "${factionName}" و اکانت "${uid}" با موفقیت حذف و آزاد شد.`);
+    if (adminEditTarget === uid) {
+      document.getElementById('admin-edit-card').style.display = 'none';
+      adminEditTarget = null;
+    }
+    loadAdminPanel();
+  } catch(e) {
+    notify('❌ خطا در حذف بازیکن از دیتابیس!');
+  }
+};
 
 async function adminOpenEdit(uid) {
   adminEditTarget = uid;
