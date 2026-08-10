@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XCiew | Text War — مرکز فرماندهی بدون تحریم</title>
+<title>XCiew | Text War — مرکز فرماندهی </title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Sans+Arabic:wght@300;400;600;700&display=swap');
   :root {
@@ -130,7 +130,7 @@
 
   <!-- LOADING -->
   <div class="screen active" id="screen-loading">
-    <div class="loading">⏳ در حال اتصال به سرور بدون تحریم سوپابیس...</div>
+    <div class="loading">⏳ در حال اتصال به سرور...</div>
   </div>
 
   <!-- LOGIN / REGISTER -->
@@ -239,7 +239,7 @@
     </div>
     <div class="grid-2">
       <div class="menu-btn" onclick="showScreen('screen-shop');initShop()">
-        <div class="menu-icon">🛒</div><div class="menu-label">فروشگاه نظامی (تکی)</div>
+        <div class="menu-icon">🛒</div><div class="menu-label">فروشگاه نظامی</div>
       </div>
       <div class="menu-btn" onclick="showScreen('screen-mines');renderMines()">
         <div class="menu-icon">⛏️</div><div class="menu-label">مدیریت معادن</div>
@@ -266,7 +266,7 @@
   <div class="screen" id="screen-shop">
     <button class="back-btn" onclick="showScreen('screen-main')">← برگشت</button>
     <div class="card">
-      <div class="card-title">🛒 فروشگاه تسلیحات (خرید به تعداد دلخواه واحد)</div>
+      <div class="card-title">🛒 فروشگاه تسلیحات </div>
       <select id="shop-category" onchange="renderShopItems()">
         <option value="">انتخاب دسته...</option>
       </select>
@@ -426,20 +426,18 @@ const SUPABASE_KEY = "sb_publishable_f3X_ceYBVhjV_G3uQQyI4A_VVwRs4Wa";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "admin1234";
 const INVITE_CODE = "war2026";
 const GOLD_RATE = 1000; 
-const MAX_MINE_LIMIT = 7; // سقف مجاز برای خرید هر معدن
+const MAX_MINE_LIMIT = 7; 
 
 const CONTINENTS = {
   "اروپا 🌍": ["انگلیس 🇬🇧","فرانسه 🇫🇷","آلمان 🇩🇪","ایتالیا 🇮🇹","اسپانیا 🇪🇸","سوئد 🇸🇪","اوکراین 🇺🇦","لهستان 🇵🇱","یونان 🇬🇷","سوئیس 🇨🇭","پرتغال 🇵🇹","روسیه 🇷🇺","بلاروس 🇧🇾","صربستان 🇷🇸"],
   "آمریکا 🌎": ["آمریکا 🇺🇸","کانادا 🇨🇦","برزیل 🇧🇷","مکزیک 🇲🇽"],
-  "آسیا 🌏": ["ژاپن 🇯🇵","کره جنوبی 🇰🇷","چین 🇨🇳","هند 🇮🇳","کره شمالی 🇰🇵","پاکستان 🇵🇰","ایران 🇮🇷","عراق 🇮🇶","سوریه 🇸🇾","یمن 🇾🇪","قطر 🇶🇦","اندونزی 🇮🇩","تایوان 🇹🇼","آذربایجان 🇦🇿","ارمنستان 🇦🇲","ترکیه 🇹رک"],
+  "آسیا 🌏": ["ژاپن 🇯🇵","کره جنوبی 🇰🇷","چین 🇨🇳","هند 🇮🇳","کره شمالی 🇰🇵","پاکستان 🇵🇰","ایران 🇮🇷","عراق 🇮🇶","سوریه 🇸🇾","یمن 🇾🇪","قطر 🇶🇦","اندونزی 🇮🇩","تایوان 🇹🇼","آذربایجان 🇦🇿","ارمنستان 🇦🇲","ترکیه"],
   "خاورمیانه و آفریقا 🌍": ["مصر 🇪🇬","عربستان 🇸🇦","امارات 🇦🇪","لیبی 🇱🇾","آفریقای جنوبی 🇿🇦","اسرائیل 🇮🇱"],
   "اقیانوسیه 🌊": ["استرالیا 🇦🇺"]
 };
-const GROUPS = ["واگنر ⚔️","سپاه پاسداران ☪️","القاعده 🏴","طالبان 🏴","حزب‌الله 🟢","داعش 🏴","SDF","CIA 🕵️"];
+const GROUPS = ["واگنر ⚔️","سپاه پاسداران ☪️","القاعده 🏴","طالبان 🏴","حزب‌الله 🟢","داعش 🏴","SDF"];
 const MINES = {
   "معدن مس 🟤": {price:5000,income:2000,gold:0},
   "معدن آهن ⚙️": {price:7000,income:3000,gold:0},
@@ -531,7 +529,9 @@ Object.values(MILITARY).forEach(cat => {
 });
 
 let currentUser = null;
+let currentPassword = null; 
 let currentPlayer = null;
+let adminPassword = null; 
 let adminEditTarget = null;
 let lbCacheData = [];
 let lbCurrentMode = 'econ';
@@ -567,24 +567,20 @@ function updateStats() {
   document.getElementById('stat-satisfaction').textContent = (currentPlayer.satisfaction !== undefined ? currentPlayer.satisfaction : 100) + '%';
 }
 
-async function savePlayer() {
-  if (!currentUser || !currentPlayer) return;
-  await supabase.from('players').update({
-    faction: currentPlayer.faction,
-    faction_type: currentPlayer.faction_type,
-    money: currentPlayer.money,
-    gold: currentPlayer.gold,
-    satisfaction: currentPlayer.satisfaction,
-    mines: currentPlayer.mines,
-    military: currentPlayer.military,
-    inventions: currentPlayer.inventions || {},
-    last_income: currentPlayer.last_income
-  }).eq('username', currentUser);
+async function refreshCurrentPlayer() {
+  if (!currentUser) return;
+  const { data, error } = await supabase.rpc('login_player_secure', { p_username: currentUser, p_password: currentPassword });
+  if (!error && data) {
+    currentPlayer = data;
+    if (!currentPlayer.inventions) currentPlayer.inventions = {};
+    if (currentPlayer.satisfaction === undefined) currentPlayer.satisfaction = 100;
+    updateStats();
+  }
 }
 
 async function getOccupiedFactions() {
   const occupied = [];
-  const { data, error } = await supabase.from('players').select('faction');
+  const { data, error } = await supabase.rpc('get_players_list_secure');
   if (!error && data) {
     data.forEach(p => { if(p.faction) occupied.push(p.faction); });
   }
@@ -604,15 +600,23 @@ window.doLogin = async function() {
   const err = document.getElementById('login-error');
   err.style.display = 'none';
   if (!user || !pass) { err.textContent = 'همه فیلدها رو پر کن'; err.style.display = 'block'; return; }
+  
   try {
     document.getElementById('screen-loading').classList.add('active');
-    const { data, error } = await supabase.from('players').select('*').eq('username', user).single();
+    
+    // استفاده از تابع امن جدید برای لاگین
+    const { data, error } = await supabase.rpc('login_player_secure', { p_username: user, p_password: pass });
+    
     document.getElementById('screen-loading').classList.remove('active');
     
-    if (error || !data) { err.textContent = 'کاربر پیدا نشد'; err.style.display = 'block'; return; }
-    if (data.password !== pass) { err.textContent = 'رمز عبور اشتباهه'; err.style.display = 'block'; return; }
+    if (error || !data) { 
+        err.textContent = 'نام کاربری یا رمز عبور اشتباه است'; 
+        err.style.display = 'block'; 
+        return; 
+    }
     
     currentUser = user;
+    currentPassword = pass;
     currentPlayer = data;
     if (!currentPlayer.inventions) currentPlayer.inventions = {};
     if (currentPlayer.satisfaction === undefined) currentPlayer.satisfaction = 100;
@@ -620,7 +624,7 @@ window.doLogin = async function() {
     document.getElementById('header-sub').textContent = 'مرکز فرماندهی — ' + user;
     if (!currentPlayer.faction) showScreen('screen-faction');
     else { updateStats(); showScreen('screen-main'); }
-  } catch(e) { err.textContent = 'خطا در اتصال به سرور'; err.style.display = 'block'; }
+  } catch(e) { err.textContent = 'خطا در ارتباط با سرور'; err.style.display = 'block'; }
 };
 
 window.doRegister = async function() {
@@ -638,30 +642,45 @@ window.doRegister = async function() {
   if (pass.length < 6) { err.textContent = 'رمز عبور حداقل ۶ کاراکتر'; err.style.display = 'block'; return; }
   if (pass !== pass2) { err.textContent = 'رمزها یکی نیستن'; err.style.display = 'block'; return; }
   try {
-    const { data } = await supabase.from('players').select('username').eq('username', user).single();
-    if (data) { err.textContent = 'این نام کاربری قبلاً ثبت شده'; err.style.display = 'block'; return; }
-    
-    const { error } = await supabase.from('players').insert([{ 
+    const { data, error } = await supabase.from('players').insert([{ 
       username: user, password: pass, money: 85000, gold: 0, satisfaction: 100, mines: {}, military: {}, inventions: {}, last_income: 0, faction: '', faction_type: '' 
     }]);
     if(error) throw error;
     suc.textContent = '✅ ثبت‌نام موفق! حالا از تب ورود وارد شو.'; suc.style.display = 'block';
-  } catch(e) { err.textContent = 'خطا در ثبت‌نام'; err.style.display = 'block'; }
+  } catch(e) {
+    err.textContent = e.message && e.message.includes('duplicate') ? 'این نام کاربری قبلاً ثبت شده' : 'خطا در ثبت‌نام';
+    err.style.display = 'block';
+  }
 };
 
-window.doAdminLogin = function() {
-  const user = prompt('نام کاربری ادمین:');
-  const pass = prompt('رمز عبور:');
-  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+window.doAdminLogin = async function() {
+  const pass = prompt('رمز عبور ادمین:');
+  if (!pass) return;
+
+  document.getElementById('screen-loading').classList.add('active');
+  
+  try {
+    const { data, error } = await supabase.rpc('verify_admin', { p_admin_pass: pass });
+    document.getElementById('screen-loading').classList.remove('active');
+
+    if (error || data !== true) {
+      notify('❌ رمز عبور اشتباه است! دسترسی مسدود شد.');
+      return;
+    }
+
+    adminPassword = pass;
     currentUser = 'admin';
     document.getElementById('header-sub').textContent = 'پنل مدیریت ادمین';
     loadAdminPanel();
     showScreen('screen-admin');
-  } else { notify('❌ اطلاعات ورود ادمین اشتباهه'); }
+  } catch(e) {
+    document.getElementById('screen-loading').classList.remove('active');
+    notify('❌ خطا در ارتباط با سرور');
+  }
 };
 
 window.doLogout = function() {
-  currentUser = null; currentPlayer = null;
+  currentUser = null; currentPassword = null; currentPlayer = null; adminPassword = null;
   document.getElementById('header-sub').textContent = 'مرکز فرماندهی';
   showScreen('screen-login');
 };
@@ -684,7 +703,7 @@ async function showCountries(continent) {
     const isTaken = occupied.includes(c);
     btn.textContent = c + (isTaken ? ' (پر شده ❌)' : '');
     if(isTaken) btn.disabled = true;
-    btn.onclick = () => selectFaction(c, 'country');
+    btn.onclick = () => notify('انتخاب کشور توسط ادمین انجام می‌شود. لطفاً با ادمین هماهنگ کنید.');
     list.appendChild(btn);
   });
   showScreen('screen-country');
@@ -699,19 +718,12 @@ async function showGroups() {
     const isTaken = occupied.includes(g);
     btn.textContent = g + (isTaken ? ' (پر شده ❌)' : '');
     if(isTaken) btn.disabled = true;
-    btn.onclick = () => selectFaction(g, 'group');
+    btn.onclick = () => notify('انتخاب گروهک توسط ادمین انجام می‌شود. لطفاً با ادمین هماهنگ کنید.');
     list.appendChild(btn);
   });
   showScreen('screen-group');
 }
 window.showGroups = showGroups;
-
-async function selectFaction(faction, type) {
-  const occupied = await getOccupiedFactions();
-  if (occupied.includes(faction)) { notify('❌ این جناح توسط شخص دیگری پر شد!'); return; }
-  currentPlayer.faction = faction; currentPlayer.faction_type = type;
-  await savePlayer(); updateStats(); notify('✅ جناح ' + faction + ' ثبت شد.'); showScreen('screen-main');
-}
 
 window.initShop = function() {
   const sel = document.getElementById('shop-category');
@@ -759,26 +771,29 @@ window.renderShopItems = function() {
         <span style="font-size:11px;color:var(--text-dim)">تعداد:</span>
         <input type="number" id="qty-${name}" class="input-inline" min="1" value="1" oninput="if(this.value<1)this.value=1; document.getElementById('p-total-${name}').textContent = (this.value * ${price}).toLocaleString()">
         <span class="item-price"><span id="p-total-${name}">${price.toLocaleString()}</span> ₿</span>
-        <button class="btn btn-sm" onclick="buyItemBulk('${name}',${price})">خرید واحد</button>
+        <button class="btn btn-sm" onclick="buyItemBulk('${name}')">خرید واحد</button>
       </div>`;
     container.appendChild(div);
   });
 };
 
-window.buyItemBulk = async function(name, price) {
+window.buyItemBulk = async function(name) {
   const input = document.getElementById(`qty-${name}`);
   const qty = parseInt(input.value);
   if (isNaN(qty) || qty <= 0) { notify('❌ تعداد وارد شده معتبر نیست'); return; }
-  const totalPrice = price * qty;
-  if ((currentPlayer.money || 0) < totalPrice) { notify('❌ بیت‌کوین کافی نداری!'); return; }
-  
-  currentPlayer.money -= totalPrice;
-  if (!currentPlayer.military) currentPlayer.military = {};
-  currentPlayer.military[name] = (currentPlayer.military[name] || 0) + qty;
-  
-  await savePlayer(); updateStats();
-  notify(`✅ تعداد ${qty} واحد ${name} خریداری شد.`);
-  renderShopItems();
+
+  try {
+    const { data, error } = await supabase.rpc('buy_military', {
+      p_username: currentUser, p_password: currentPassword, p_item_name: name, p_qty: qty
+    });
+    if (error) throw error;
+
+    await refreshCurrentPlayer();
+    notify(`✅ تعداد ${qty} واحد ${name} خریداری شد.`);
+    renderShopItems();
+  } catch(e) {
+    notify('❌ ' + (e.message || 'خطا در خرید'));
+  }
 };
 
 window.renderMines = function() {
@@ -799,20 +814,18 @@ window.renderMines = function() {
 };
 
 window.buyMine = async function(name) {
-  if (!currentPlayer.mines) currentPlayer.mines = {};
-  const currentOwned = currentPlayer.mines[name] || 0;
-  
-  if (currentOwned >= MAX_MINE_LIMIT) {
-    notify('❌ شما حداکثر تعداد مجاز (۷ عدد) از این منبع را خریداری کرده‌اید!');
-    return;
-  }
+  try {
+    const { data, error } = await supabase.rpc('buy_mine', {
+      p_username: currentUser, p_password: currentPassword, p_mine_name: name
+    });
+    if (error) throw error;
 
-  const price = MINES[name].price;
-  if ((currentPlayer.money || 0) < price) { notify('❌ بودجه کافی نداری!'); return; }
-  
-  currentPlayer.money -= price;
-  currentPlayer.mines[name] = currentOwned + 1;
-  await savePlayer(); updateStats(); notify(`✅ ${name} خریداری شد (${currentPlayer.mines[name]}/${MAX_MINE_LIMIT}).`); renderMines();
+    await refreshCurrentPlayer();
+    notify(`✅ ${name} خریداری شد.`);
+    renderMines();
+  } catch(e) {
+    notify('❌ ' + (e.message || 'خطا در خرید معدن'));
+  }
 };
 
 window.initExchange = function() {
@@ -824,29 +837,33 @@ window.sellGold = async function() {
   const input = document.getElementById('ex-gold-input');
   const amount = parseInt(input.value);
   if (isNaN(amount) || amount <= 0) { notify('❌ تعداد معتبر وارد کنید'); return; }
-  if ((currentPlayer.gold || 0) < amount) { notify('❌ این مقدار شمش طلا نداری!'); return; }
-  
-  const cashGain = amount * GOLD_RATE;
-  currentPlayer.gold -= amount;
-  currentPlayer.money = (currentPlayer.money || 0) + cashGain;
-  
-  await savePlayer(); updateStats();
-  notify(`✅ صرافی: ${amount} طلا فروخته شد و +${cashGain.toLocaleString()} ₿ دریافت شد.`);
-  initExchange();
+
+  try {
+    const { data, error } = await supabase.rpc('sell_gold', {
+      p_username: currentUser, p_password: currentPassword, p_amount: amount
+    });
+    if (error) throw error;
+
+    await refreshCurrentPlayer();
+    notify(`✅ صرافی: ${amount} طلا فروخته شد و +${(amount*GOLD_RATE).toLocaleString()} ₿ دریافت شد.`);
+    initExchange();
+  } catch(e) {
+    notify('❌ ' + (e.message || 'خطا در فروش طلا'));
+  }
 };
 
 window.collectIncome = async function() {
-  const now = Date.now();
-  const elapsed = (now - (currentPlayer.last_income || 0)) / 1000;
-  if (elapsed < 86400 && (currentPlayer.last_income || 0) > 0) {
-    const rem = 86400 - elapsed;
-    notify(`⏳ خزانه خالیست! ${Math.floor(rem/3600)} ساعت و ${Math.floor((rem%3600)/60)} دقیقه دگر صبر کنید.`); return;
+  try {
+    const { data, error } = await supabase.rpc('collect_income', {
+      p_username: currentUser, p_password: currentPassword
+    });
+    if (error) throw error;
+
+    await refreshCurrentPlayer();
+    notify(`✅ واریز درآمد: +${(data.money_gained||0).toLocaleString()} ₿ | +${data.gold_gained||0} طلا`);
+  } catch(e) {
+    notify('❌ ' + (e.message || 'خطا در دریافت درآمد'));
   }
-  let m = 0, g = 0;
-  Object.entries(currentPlayer.mines || {}).forEach(([name, count]) => { m += MINES[name].income * count; g += MINES[name].gold * count; });
-  if (m === 0 && g === 0) { notify('❌ هیچ معدنی برای استخراج درآمد نداری!'); return; }
-  currentPlayer.money = (currentPlayer.money || 0) + m; currentPlayer.gold = (currentPlayer.gold || 0) + g; currentPlayer.last_income = now;
-  await savePlayer(); updateStats(); notify(`✅ واریز درآمد: +${m.toLocaleString()} ₿ | +${g} طلا`);
 };
 
 /* --- LEADERBOARD LOGIC --- */
@@ -854,7 +871,7 @@ window.loadLeaderboard = async function() {
   const container = document.getElementById('lb-content');
   container.innerHTML = '<div class="loading">در حال بارگذاری و محاسبه رتبه‌بندی‌ها...</div>';
   try {
-    const { data, error } = await supabase.from('players').select('*');
+    const { data, error } = await supabase.rpc('get_players_list_secure');
     if (error) throw error;
     lbCacheData = data || [];
     renderLeaderboard();
@@ -972,7 +989,7 @@ async function loadAdminPanel() {
   const container = document.getElementById('admin-players');
   container.innerHTML = '<div class="loading">در حال بارگذاری...</div>';
   try {
-    const { data, error } = await supabase.from('players').select('*');
+    const { data, error } = await supabase.rpc('get_players_list_secure');
     if(error) throw error;
     container.innerHTML = '';
     data.forEach(p => {
@@ -991,13 +1008,14 @@ async function loadAdminPanel() {
 }
 window.loadAdminPanel = loadAdminPanel;
 
-/* DELETE PLAYER & FREE FACTION FUNCTION */
 window.adminDeletePlayer = async function(uid, factionName) {
   const confirmDelete = confirm(`⚠️ آیا مطمئن هستید که می‌خواهید کاربر "${uid}" و کشور/جناح "${factionName}" را کاملاً حذف کنید؟\nاین عملیات غیرقابل بازگشت است و کشور آزاد می‌شود.`);
   if (!confirmDelete) return;
 
   try {
-    const { error } = await supabase.from('players').delete().eq('username', uid);
+    const { error } = await supabase.rpc('admin_delete_player', {
+      p_admin_pass: adminPassword, p_username: uid
+    });
     if (error) throw error;
 
     notify(`✅ کشور/جناح "${factionName}" و اکانت "${uid}" با موفقیت حذف و آزاد شد.`);
@@ -1007,7 +1025,7 @@ window.adminDeletePlayer = async function(uid, factionName) {
     }
     loadAdminPanel();
   } catch(e) {
-    notify('❌ خطا در حذف بازیکن از دیتابیس!');
+    notify('❌ ' + (e.message || 'خطا در حذف بازیکن از دیتابیس!'));
   }
 };
 
@@ -1015,18 +1033,24 @@ async function adminOpenEdit(uid) {
   adminEditTarget = uid;
   document.getElementById('admin-edit-name').textContent = uid;
   
-  const { data } = await supabase.from('players').select('*').eq('username', uid).single();
+  const { data } = await supabase.rpc('get_players_list_secure');
+  const playerData = data.find(p => p.username === uid);
   
-  document.getElementById('admin-money-val').value = data.money || 0;
-  document.getElementById('admin-gold-val').value = data.gold || 0;
-  document.getElementById('admin-satisfaction-val').value = data.satisfaction !== undefined ? data.satisfaction : 100;
+  if (!playerData) {
+    notify('❌ کاربر پیدا نشد');
+    return;
+  }
+  
+  document.getElementById('admin-money-val').value = playerData.money || 0;
+  document.getElementById('admin-gold-val').value = playerData.gold || 0;
+  document.getElementById('admin-satisfaction-val').value = playerData.satisfaction !== undefined ? playerData.satisfaction : 100;
 
-  renderAdminInventionsList(data.inventions || {});
+  renderAdminInventionsList(playerData.inventions || {});
   
   const minesContainer = document.getElementById('admin-mines-container');
   minesContainer.innerHTML = '';
   Object.keys(MINES).forEach(mName => {
-    const count = (data.mines || {})[mName] || 0;
+    const count = (playerData.mines || {})[mName] || 0;
     const div = document.createElement('div');
     div.className = 'admin-item-row';
     div.innerHTML = `
@@ -1042,7 +1066,7 @@ async function adminOpenEdit(uid) {
   milContainer.innerHTML = '';
   Object.entries(MILITARY).forEach(([cat, items]) => {
     Object.keys(items).forEach(milName => {
-      const count = (data.military || {})[milName] || 0;
+      const count = (playerData.military || {})[milName] || 0;
       const div = document.createElement('div');
       div.className = 'admin-item-row';
       div.innerHTML = `
@@ -1093,33 +1117,38 @@ window.adminAddInvention = async function() {
   }
 
   try {
-    const { data } = await supabase.from('players').select('inventions').eq('username', adminEditTarget).single();
-    let currentInvs = data.inventions || {};
-    currentInvs[name] = price;
+    const { error } = await supabase.rpc('admin_add_invention', {
+      p_admin_pass: adminPassword, p_username: adminEditTarget, p_invention_name: name, p_price: price
+    });
+    if (error) throw error;
 
-    await supabase.from('players').update({ inventions: currentInvs }).eq('username', adminEditTarget);
-
+    const { data } = await supabase.rpc('get_players_list_secure');
+    const playerData = data.find(p => p.username === adminEditTarget);
+    
     nameInput.value = '';
     priceInput.value = '';
-    renderAdminInventionsList(currentInvs);
+    renderAdminInventionsList(playerData.inventions || {});
     notify(`💡 اختراع "${name}" با قیمت ${price.toLocaleString()} ₿ ثبت شد.`);
   } catch(e) {
-    notify('❌ خطا در افزودن اختراع به دیتابیس');
+    notify('❌ ' + (e.message || 'خطا در افزودن اختراع به دیتابیس'));
   }
 };
 
 window.adminDeleteInvention = async function(invName) {
   if (!adminEditTarget) return;
   try {
-    const { data } = await supabase.from('players').select('inventions').eq('username', adminEditTarget).single();
-    let currentInvs = data.inventions || {};
-    delete currentInvs[invName];
+    const { error } = await supabase.rpc('admin_delete_invention', {
+      p_admin_pass: adminPassword, p_username: adminEditTarget, p_invention_name: invName
+    });
+    if (error) throw error;
 
-    await supabase.from('players').update({ inventions: currentInvs }).eq('username', adminEditTarget);
-    renderAdminInventionsList(currentInvs);
+    const { data } = await supabase.rpc('get_players_list_secure');
+    const playerData = data.find(p => p.username === adminEditTarget);
+    
+    renderAdminInventionsList(playerData.inventions || {});
     notify(`🗑️ اختراع "${invName}" حذف گردید.`);
   } catch(e) {
-    notify('❌ خطا در حذف اختراع');
+    notify('❌ ' + (e.message || 'خطا در حذف اختراع'));
   }
 };
 
@@ -1128,9 +1157,12 @@ window.adminUpdateBase = async function(field) {
   const val = parseInt(document.getElementById(`admin-${field}-val`).value);
   if(isNaN(val) || val < 0) { notify('❌ عدد نامعتبر'); return; }
   try {
-    await supabase.from('players').update({ [field]: val }).eq('username', adminEditTarget);
+    const { error } = await supabase.rpc('admin_update_field', {
+      p_admin_pass: adminPassword, p_username: adminEditTarget, p_field: field, p_value: val
+    });
+    if (error) throw error;
     notify(`✅ فیلد ${field} با موفقیت به ${val} تغییر یافت.`);
-  } catch(e) { notify('❌ خطا در ذخیره دیتابیس'); }
+  } catch(e) { notify('❌ ' + (e.message || 'خطا در ذخیره دیتابیس')); }
 };
 
 window.adminSaveSingleItem = async function(type, itemName, inputId) {
@@ -1138,16 +1170,16 @@ window.adminSaveSingleItem = async function(type, itemName, inputId) {
   const newVal = parseInt(document.getElementById(inputId).value);
   if(isNaN(newVal) || newVal < 0) { notify('❌ عدد نامعتبر است'); return; }
   try {
-    const { data } = await supabase.from('players').select(type).eq('username', adminEditTarget).single();
-    let obj = data[type] || {};
-    obj[itemName] = newVal;
-    
-    await supabase.from('players').update({ [type]: obj }).eq('username', adminEditTarget);
+    const rpcName = type === 'mines' ? 'admin_save_mine_item' : 'admin_save_military_item';
+    const paramKey = type === 'mines' ? 'p_mine_name' : 'p_item_name';
+    const { error } = await supabase.rpc(rpcName, {
+      p_admin_pass: adminPassword, p_username: adminEditTarget, [paramKey]: itemName, p_count: newVal
+    });
+    if (error) throw error;
     notify(`⚙️ مقدار ${itemName} با موفقیت به ${newVal} تغییر کرد.`);
-  } catch(e) { notify('❌ خطا در ذخیره مقدار دیتابیس'); }
+  } catch(e) { notify('❌ ' + (e.message || 'خطا در ذخیره مقدار دیتابیس')); }
 };
 
-// INITIAL LOAD
 document.getElementById('screen-loading').classList.remove('active');
 showScreen('screen-login');
 </script>
