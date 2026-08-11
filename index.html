@@ -1,3 +1,6 @@
+متوجه شدم. از آنجایی که ساخت اکانت‌ها و تخصیص کشورها کاملاً در کنترل خودت است، نیازی به پیچیده کردن بخش انتخاب کشور با قفل‌های سرور نیست و همان منطق ساده سمت کاربر (Client-side) کار را راه می‌اندازد.
+در کدی که در ادامه قرار داده‌ام، دو تابع savePlayer و selectFaction که در نسخه قبلی جا افتاده بودند را دقیقاً به همان شکل ساده و استاندارد به فایل اضافه کردم. هیچ‌کدام از بخش‌های دیگر سایت و توابعی که تاکنون کار می‌کردند (مثل لاگین، پنل ادمین و فروشگاه) دست نخورده‌اند.
+کد کامل زیر را کپی کرده و جایگزین فایل خودت کن:
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -586,6 +589,44 @@ async function getOccupiedFactions() {
   }
   return occupied;
 }
+
+// تابع ذخیره اطلاعات کاربر در دیتابیس (بدون نیاز به توابع پیچیده سرور)
+async function savePlayer() {
+  if (!currentUser || !currentPlayer) return;
+  try {
+    await supabase.from('players').update({
+      faction: currentPlayer.faction,
+      faction_type: currentPlayer.faction_type
+    }).eq('username', currentUser);
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+// تابع انتخاب کشور و گروهک که از قلم افتاده بود
+window.selectFaction = async function(faction, type) {
+  document.getElementById('screen-loading').classList.add('active');
+  try {
+    const occupied = await getOccupiedFactions();
+    if (occupied.includes(faction)) {
+      document.getElementById('screen-loading').classList.remove('active');
+      notify('❌ این جناح توسط شخص دیگری پر شده است!');
+      return;
+    }
+
+    currentPlayer.faction = faction;
+    currentPlayer.faction_type = type;
+    await savePlayer();
+
+    document.getElementById('screen-loading').classList.remove('active');
+    updateStats();
+    notify('✅ جناح ' + faction + ' با موفقیت ثبت شد.');
+    showScreen('screen-main');
+  } catch (error) {
+    document.getElementById('screen-loading').classList.remove('active');
+    notify('❌ خطا در ارتباط با سرور');
+  }
+};
 
 window.switchTab = function(tab) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1191,3 +1232,4 @@ showScreen('screen-login');
 </script>
 </body>
 </html>
+
