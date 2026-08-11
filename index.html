@@ -703,12 +703,14 @@ async function showCountries(continent) {
     const isTaken = occupied.includes(c);
     btn.textContent = c + (isTaken ? ' (پر شده ❌)' : '');
     if(isTaken) btn.disabled = true;
-    btn.onclick = () => notify('انتخاب کشور توسط ادمین انجام می‌شود. لطفاً با ادمین هماهنگ کنید.');
+    
+    // تغییر جهت اجازه انتخاب مستقیم توسط بازیکن
+    btn.onclick = () => selectFaction(c, 'country');
+    
     list.appendChild(btn);
   });
   showScreen('screen-country');
 }
-window.showCountries = showCountries;
 
 async function showGroups() {
   const list = document.getElementById('group-list'); list.innerHTML = '';
@@ -718,11 +720,15 @@ async function showGroups() {
     const isTaken = occupied.includes(g);
     btn.textContent = g + (isTaken ? ' (پر شده ❌)' : '');
     if(isTaken) btn.disabled = true;
-    btn.onclick = () => notify('انتخاب گروهک توسط ادمین انجام می‌شود. لطفاً با ادمین هماهنگ کنید.');
+    
+    // تغییر جهت اجازه انتخاب مستقیم توسط بازیکن
+    btn.onclick = () => selectFaction(g, 'group');
+    
     list.appendChild(btn);
   });
   showScreen('screen-group');
 }
+
 window.showGroups = showGroups;
 
 window.initShop = function() {
